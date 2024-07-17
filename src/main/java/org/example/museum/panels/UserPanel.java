@@ -35,7 +35,7 @@ public class UserPanel {
     }
 
 
-    private static LocalDate parseStringToLocalDate(final String dateString) {
+    public static LocalDate parseStringToLocalDate(final String dateString) {
         final String pattern = "yyyy-MM-dd";
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
