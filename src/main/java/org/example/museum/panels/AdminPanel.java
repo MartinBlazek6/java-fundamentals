@@ -17,6 +17,33 @@ public class AdminPanel {
                 .toArray(Ticket[]::new);
     }
 
+    public static void printCapacityLeftByDate(LocalDate localDate, Museum museum) {
+        final int parDayCapacity = 10;
+        final double bookedTickets = getTicketsByDate(museum, localDate).length;
+        double percentage =  (bookedTickets / parDayCapacity) * 100;
+        System.out.printf("Free capacity for %s is %s percents \n",localDate, 100 - percentage);
+        System.out.printf("%s tickets left \n",parDayCapacity - bookedTickets);
+    }
+
+
+    public static void printMuseumTickets(Museum museum) {
+        System.out.println("All Tickets in Database:");
+        System.out.println("Order Full Name | Ticket Type | Ticket Date");
+        System.out.println("------------------------------------------------");
+        if (museum.getOrders() != null) {
+            for (Order order : museum.getOrders()) {
+                for (Ticket ticket : order.getTickets()) {
+                    System.out.printf("%-16s | %-11s | %-10s%n",
+                            order.getFullName(),
+                            ticket.getType(),
+                            ticket.getDate().toString());
+                }
+            }
+        } else {
+            System.out.println("No tickets found.");
+        }
+    }
+
     public static Ticket[] getTicketsByDateNonStream(Museum museum, LocalDate localDate) {
         int count = 0;
 
@@ -52,5 +79,9 @@ public class AdminPanel {
         Ticket[] ticketsByDate = AdminPanel.getTicketsByDateNonStream(museum, targetDate);
         System.out.println("Tickets on " + targetDate + ": " + Arrays.toString(ticketsByDate));
         System.out.println("Number of tickets on " + targetDate + ": " + ticketsByDate.length);
+
+        printCapacityLeftByDate(targetDate, museum);
+
+        printMuseumTickets(museum);
     }
 }
