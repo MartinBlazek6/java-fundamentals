@@ -1,5 +1,6 @@
 package org.example.museum.panels;
 
+import org.example.museum.Museum;
 import org.example.museum.Order;
 import org.example.museum.Ticket;
 
@@ -44,5 +45,32 @@ public class UserPanel {
             System.out.println("Error parsing date: " + e.getMessage());
             return null;
         }
+    }
+
+    public static void userInterface(Museum museum) {
+        Scanner scanner = new Scanner(System.in);
+        String userResponse;
+
+        do {
+            System.out.print("Enter your name: ");
+            String userName = scanner.nextLine();
+
+            int numberOfTickets;
+            do {
+                System.out.print("How many tickets do you want to book? (1-3): ");
+                numberOfTickets = scanner.nextInt();
+                scanner.nextLine();
+            } while (numberOfTickets < 1 || numberOfTickets > 3);
+
+            Ticket[] tickets = UserPanel.bookTickets(numberOfTickets);
+
+            Order order = UserPanel.createOrder(userName, tickets);
+
+            museum.addOrder(order);
+
+            System.out.print("Do you want to place another order? (yes/no): ");
+            userResponse = scanner.nextLine();
+
+        } while (userResponse.equalsIgnoreCase("yes"));
     }
 }
